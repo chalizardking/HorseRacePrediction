@@ -5,9 +5,16 @@ from sklearn.linear_model import LogisticRegression
 
 # Load the model
 def load_model():
-    with open('saved_steps.pkl', 'rb') as f:
-        data = pickle.load(f)
-    return data
+    try:
+        model_data = np.load('model.npz', allow_pickle=True)
+        return {
+            'model': model_data['model'].item(),
+            'train_data': model_data['train_data'].item(),
+            'test_data': model_data['test_data'].item()
+        }
+    except Exception as e:
+        st.error(f'Error loading model: {str(e)}')
+        return None
 
 data = load_model()
 
